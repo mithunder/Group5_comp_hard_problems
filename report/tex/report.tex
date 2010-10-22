@@ -1,0 +1,57 @@
+\documentclass{report}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+\usepackage{parskip}
+\usepackage{verbatim}
+\usepackage{hyperref}
+\usepackage{amsmath}
+
+\hypersetup{
+    colorlinks,%
+    citecolor=black,%
+    filecolor=black,%
+    linkcolor=black,%
+    urlcolor=black
+}
+
+\title{Computationally Hard Problems 02249 - Lazy Travelling Salesperson}
+\author{Niels Thykier s072425\\Melvin Winstrøm-Møller s072435\\Morten Sørensen s072440}
+
+\begin{document}
+\parindent 0pt
+\parskip 3mm
+\setlength{\parindent}{0.5cm}
+\newcommand{\docpar}[0]{\vspace{0.5cm} \noindent}
+\newcommand{\footref}[1]{\footnotemark[\ref{#1}]}
+\newcommand{\newconcept}[1]{\textit{#1}}
+\newcommand{\command}[1]{\textbf{#1}}
+
+
+\maketitle
+\phantomsection
+\addcontentsline{toc}{section}{Table of Contents}
+\tableofcontents
+\newpage
+
+\chapter{Abstract}
+
+\input{abstract}
+
+\chapter{Assignment}
+
+\input{problem_description}
+
+\input{np}
+
+\input{np_complete}
+
+\input{algorithm}
+
+\input{optimizing_version}
+
+\input{implementation_testing}
+
+\end{document}
+
