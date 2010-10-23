@@ -1,7 +1,51 @@
 
-\section{a) Problemn description}
+\section{a) Problem description}
 
 \textit{Read and understand the problem. Describe in colloquial terms what the problem
 is about and explain the main differences to the classical TSP.}
 
+\subsection{Description of the problem}
+
+The input consists of 3 positive integers k, m and B,
+and a graph G. The graph G is described by its size n as well
+as an edge-weight matrix WM with positive integer weights.
+The numbers k and m are constrained by the relation:
+
+\[n - k - m \geq 2\]
+
+A problem instance PI gives YES if there is a cycle C in G
+with a specific form, and has a weight w(C) which is at most B,
+and NO otherwise.
+The form of the cycle can be described in two parts.
+
+The first part of the cycle is the first m nodes in WM.
+The second part tours a number of different nodes \(i_1 .. i_{n-k-m}\).
+None of \(i_2 .. i_{n-k-m-1\) is contained in the m first nodes.
+
+The number of edges in C, equal to the number of nodes \(|C|\),
+is described by \(\star\). It is seen that the number of edges is equal to
+\(m\) plus \(n - k - m - 1\) plus 1, which gives:
+\[|C| = n - k\]
+
+A possible modelling for the LazyTSP problem is that a lazy salesperson has to visit
+a required number of cities \(n - k\), starting and ending in city 1.
+She starts off lazily with simply visiting the first m+1 (starting with city 1)
+cities on her list of cities, not thinking about how time-effective the route is.
+Once in the m+1'th city, she discovers that she has a deadline to meet.
+Now, does there exist at least one route that visits the remaining number of cities
+and ends in the first city before the deadline ends? Note that the
+poor salesperson may already have exceeded the deadline during her lazy route.
+
+\subsection{Comparison with Travelling Salesperson}
+
+If m and k could be set to zero, the problem would simply be TSP,
+since the number of cities that must be visited \(n - k\) would become equal
+to n, which means that the cycle should visit every single node, and not have any duplicate
+nodes.
+
+Given the similarity with TSP, some of the techniques used for TSP may be useful
+for LazyTSP. Care should be taken, however, since k is never zero, and thus not all
+cities have to be visited. This means that some cities must be picked for the solution,
+while others may not be picked, which is different from TSP, where it is known that all
+cities must be picked at some point.
 

@@ -3,4 +3,60 @@
 
 \textit{Show that LazyTSP is in NP.}
 
+To show that LazyTSP is in NP, it must be shown that
+there exists a polynomial-time algorithm A that takes
+as input a problem instance of LazyTSP and a random string
+and determines whether the random string is a solution for
+LazyTSP. Basically, whether or not a suggested solution
+can be checked in polynomial time.
+
+\paragraph{Algorithm}
+
+Below, the algorithm A will be described:
+
+\begin{enumerate}
+\item	Calculate the number \(v = (n - p - m - 1)*(log_2(n)+2\) and check the bitstring.
+		If it is below v bits, skip it.
+\item	Split the first v bits into (n - p - m - 1) blocks of equal size, and interpret each block
+		as a number, specifically a node index. Check that no number occurs twice.
+\item	Check that every number is in the range \(m+2..n\).
+\item	Interpret the (n - p - m -1) as \(i_2..i_{n-k-m}\), and calculate the left-hand side from \(\star\).
+		If the value is below or equal to B, return YES. Else, return NO.
+\end{enumerate}
+
+\paragraph{Running time}
+
+In this paragraph, the running time will be shown to be polynomial.
+
+Step 1 takes linear time in n to check the number of bits.
+Step 2 takes linear time in n to split each block of bits and to
+convert each block. Checking that no number occurs twice takes square time in n.
+Step 3 takes linear time.
+Step 4 takes constant time.
+
+Since the number of steps are constant, and each step takes polynomial time in n,
+the algorithm is polynomial.
+
+\paragraph{Probability of YES and NO}
+
+In this paragraph, the probability of YES if the problem instance has a solution
+will be shown to be non-zero, and the probability of NO if the problem instance
+does not have a solution will be shown to be 1.
+
+YES: It is assumed that there exists some solution. Consider some soluion.
+This solution can be described as a bitstring encoding the solution in the form
+of \(i_2..i_{n-k-m}\), in which each index is a block of size \(log_2(n)+2\).
+When run through the algorithm, this solution will pass step 1, 2 and 3.
+When it comes to step 4, the value will be calculated, and per definition,
+since it is a solution, it will fullfil the constraint given in \(\star\),
+after which YES will be returned. Since the input string randomly just
+might happen to be of the solutions form, the probability for YES is positive,
+and thus non-zero.
+
+NO: Assume that there does not exist any solution. If the bitstring does not
+pass step 1, 2 and 3, NO will be returned. If the bitstring does pass those
+steps, it is a valid guess. Now, since there does not exist any solution,
+it will not fulfill the constraint \(\star\), and step 4 will calculate a value
+which is larger than B, and then return NO. Thus, if there is no solution
+to the problem instance, NO will always be returned.
 

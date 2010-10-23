@@ -5,4 +5,121 @@
 of the problem if you know that \(k = n - a\) or \(m = n - a\) for some a \(\in N\), which
 does not depend on n?}
 
+\subsection{Proving NP-completeness}
+
+In b) it was shown that LazyTSP was in NP.
+To show that LazyTSP is NP-complete, it only needs to be shown that
+it is at least as hard as another NP-complete problem. TSP seems to be a suitable
+candidate for this. If a problem instance of TSP can be converted to
+a problem instance of LazyTSP in polynomial time, and the YES-NO-property
+does not change, then it has been shown that LazyTSP is at least as hard
+as TSP, and is thus NP-complete.
+
+\paragraph{Transformation of problem instance}
+
+The input to the TSP is a graph G and a value B, similar to LazyTSP.
+As part of the transformation, m and k is each set to 1, and n is simply
+the number of nodes in G. Transforming the graph G to the edge-weight matrix WM
+takes polynomial time.
+
+Now, as part of the transformation, the problem instance is extended.
+A node r1 is added to WM, at position 2, and r1 have special weights:
+The weight between the first node fn and r1 is 1, and the weights between r1 and all nodes
+except fn is the same as the weights from fn to all nodes except r1 and fn.
+B is furthermore increased by 1. This simulates that the node after fn will
+have to be visited, since m is equal to one.
+To handle k, another node r2 is added to the end, and the weight between r2 and all other
+nodes is infinity. This ensures that r2 will never be added, and handles that
+k=1 nodes will not be picked for the tour.
+
+\paragraph{Preservance of YES-NO property}
+
+To prove that LazyTSP is NP-complete, it must be shown that the
+transformation of TSP problem instance X preserves the YES-NO property
+when transformed into LazyTSP problem instance X2 = T(X).
+In order to show this, it will first be shown that
+if the problem instance X gives YES, then T(X) also gives YES,
+after which it will be shown that if T(X) gives YES, then X also gives YES.
+
+\textbf{If X gives YES, then T(X) gives YES}
+
+Assume that the problem instance X gives YES, and thus have a solution
+for TSP. This means that there is a cycle in G that covers all nodes
+once and sums up to at most B. This cycle will be noted by the indexes,
+\[s = fn, i_2, .., i_n\], where \(i_n\) is the index of the node just before \(i_1\)
+in the cycle.
+
+The transformation will add two nodes, and the new cycle solution will include
+the first:
+\[s' = fn, r1, (i_2+1), (i_3+1), .., (i_n+1) = fn, r1, i'_2, i'_3, .., i'_n\].
+Note that 1 has been added to the indexes to accomodate that r1 was inserted into WM.
+The number of nodes n' is equal to n+2, and B' is equal to B+1.
+The edge weight between fn and r1 is 1, and the edge weight between r1 and
+\(i'_2\) is equal to w(fn, \(i_'2\)).
+
+Now, the first part of the left-hand side of \(\star\), the sum of m, becomes equal to 1.
+The second sum in \(\star\) is the sum of the nodes from
+m+1 to n'-k. This becomes the range 2 to n+1 in s', which fits with
+\[w(r1, i'_2) + w(i'_2, i'_3) + .. + w(i'_{n-1}, i'_n)\].
+But since \(w(r1, i'_2)\) is equal to w(fn, \(i_'2\)), this
+sum is equal to the sum of s taken as a path.
+The third part of \(\star\) is simply equal to \(w(i_n, fn)\).
+Taken together, the value thus becomes equal to \(w(s') \leq B + 1 = B'\),
+fulfilling the constraint \(\star\). The sequence solution to T(X) is then simply the indexes
+\(r1, i'_2, i'_3, .., i'_n\).
+It has then been shown how to transform a solution in X to a solution in
+T(X), and thus preserving that if X gives YES, then T(X) gives YES.
+
+\textbf{If T(X) gives YES, then X gives YES}
+
+Assume that the transformed problem instance T(X) gives YES, and thus
+have a solution for LazyTSP. This means that there is a cycle in G'
+that fulfils \(\star\). Note this cycle by
+\[s' = fn, r1, i'_2, i'_3, .., i'_n\].
+Now, the sum of this is equal to \(w(s') \leq B + 1 = B'\). If r1 is removed from the cycle,
+a link can instead be made between fn and \(i'_2\), giving: 
+\[s = fn, i_2, .., i_n\].
+This simply gives a decrease in weight of the cycle of 1, since w(fn, r1) is 1, and
+\(w(fn, i'_2) = w(r1, i'_2)\). This results in a weight of the cycle
+\(w(s) \leq B'-1 = B\). In the original graph, this means that all nodes are covered,
+and that the cycle has weight less than B, which causes X to give YES.
+It has then been shown that if T(X) gives YES, then X gives YES.
+
+\paragraph{Conclusion}
+
+Since it has been shown that there exists a polynomial-time algorithm
+that transforms problem instances from TSP to LazyTSP, that the
+YES-NO property of problem instances is preserved in the transformation,
+and that LazyTSP is in NP, it then follows that LazyTSP is NP-complete.
+
+\subsection{Considerations regarding complexity}
+
+First k will be considered, followed by m.
+
+\textbf{k}
+
+Given the constant a, it follows that for those problem instances
+for which a does not break the constraints on n, m and k, the difference
+between k and n will be constant. k can have an impact on the complexity,
+since k nodes does not have to be picked. If the difference between k and n
+is constant, then the maximum number of nodes that have to be picked will
+also be constant. This gives in effect a problem instance where for increasing n,
+a constant number c of nodes will have to be picked from these, fulfilling \(\star\).
+Ignoring m, this gives a=c, and a number of different combinations of nodes to pick equal to
+\[\frac{n!}{(n-a)!}\]
+Note that this formula is similar to the binomial coefficient, but not the same,
+since the order of the picked nodes matters.
+
+TODO: The time complexity of that is non-trivial. A calc document has been committed to git
+that investigates the complexity. It seems to be something like \((b/log(n))^n\),
+but I am not certain./Melvin.
+
+\textbf{m}
+
+Given the constant a, it follows that for those problem instances
+for which a does not break the constraints on n, m and k, the difference
+between m and n will be constant. m has a major impact on the complexity,
+since the m+1 first nodes does not have to be considered when finding a solution.
+If the difference between m and n then is constant, the number of nodes that will
+have to be considered is then also constant. This makes the time complexity polynomial.
 
