@@ -3,10 +3,10 @@ package com.github.mithunder.node;
 public class Node {
 
 	private final int ID;
-	private final int X_CORD;
-	private final int Y_CORD;
+	private final double X_CORD;
+	private final double Y_CORD;
 
-	public Node(int id, int x, int y) {
+	public Node(int id, double x, double y) {
 		ID = id;
 		X_CORD = x;
 		Y_CORD = y;
@@ -16,11 +16,11 @@ public class Node {
 		return ID;
 	}
 
-	public int getX() {
+	public double getX() {
 		return X_CORD;
 	}
 
-	public int getY() {
+	public double getY() {
 		return Y_CORD;
 	}
 }
