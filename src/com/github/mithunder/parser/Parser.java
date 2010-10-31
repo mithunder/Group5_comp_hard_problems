@@ -26,7 +26,11 @@ public class Parser {
 				System.out.println(read);
 			}
 			while(!read.equals("EOF")) {
-				read = in.readLine().trim();
+				read = in.readLine();
+				if(read == null || read.equals("")) {
+					break;
+				}
+				read = read.trim();
 				String[] node = read.split(" ");
 				if(node.length >= 3) {
 					int id = -1;
@@ -44,7 +48,7 @@ public class Parser {
 							}
 						}
 					}
-					list.add(new Node(Integer.parseInt(node[id]),Integer.parseInt(node[x]),Integer.parseInt(node[y])));
+					list.add(new Node(Integer.parseInt(node[id]),Double.parseDouble(node[x]),Double.parseDouble(node[y])));
 				}
 			}
 			in.close();
