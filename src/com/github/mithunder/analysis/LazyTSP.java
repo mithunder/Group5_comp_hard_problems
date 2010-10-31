@@ -1,14 +1,21 @@
 package com.github.mithunder.analysis;
 
 import java.util.Collection;
+import java.util.List;
 
 import com.github.mithunder.node.Graph;
 import com.github.mithunder.node.Node;
 
 public interface LazyTSP {
 
-	public Collection<Node> getLazyTSPSequence(Graph g, int m, int k, int B);
+	/**
+	 * @param g
+	 * @param m
+	 * @param k
+	 * @param B
+	 * @return Null if no sequence exists, or a list indicating the sequence (not the cycle).
+	 */
+	public List<Node> getLazyTSPSequence(Graph g, int m, int k, int B);
 	
-
-	public Collection<Node> getLazyTSPSequence(Graph g, int m, int k, int B, Collection<String> properties);
+	public List<Node> getLazyTSPSequence(Graph g, int m, int k, int B, Collection<String> properties);
 }
