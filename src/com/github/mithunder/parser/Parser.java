@@ -23,7 +23,7 @@ public class Parser {
 			while(!read.equals("NODE_COORD_SECTION")) {
 				read = in.readLine().trim();
 				//TODO: Something more clever than just print to screen
-				System.out.println(read);
+//				System.out.println(read);
 			}
 			while(!read.equals("EOF")) {
 				read = in.readLine();

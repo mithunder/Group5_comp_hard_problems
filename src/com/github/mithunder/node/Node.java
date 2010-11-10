@@ -12,15 +12,15 @@ public class Node {
 		Y_CORD = y;
 	}
 
-	public int getId() {
+	public final int getId() {
 		return ID;
 	}
 
-	public double getX() {
+	public final double getX() {
 		return X_CORD;
 	}
 
-	public double getY() {
+	public final double getY() {
 		return Y_CORD;
 	}
 }

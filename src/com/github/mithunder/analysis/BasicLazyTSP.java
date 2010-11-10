@@ -2,7 +2,6 @@ package com.github.mithunder.analysis;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import com.github.mithunder.node.Graph;
@@ -11,14 +10,15 @@ import com.github.mithunder.node.Node;
 public class BasicLazyTSP implements LazyTSP {
 
 	@Override
-	public List<Node> getLazyTSPSequence(Graph g, int m, int k, int B) {
+	public List<Node> getLazyTSPSequence(Graph g, int m, int k, int B,
+			Collection<String> properties) {
 		
-		checkArguments(g, m, k, B);
+		Checker.checkArguments(g, m, k, B);
 		
 		//First, visit all nodes except the m+1 first nodes.
 		boolean[] visited = new boolean[g.getNodeCount()];
-		for (int i = m+1; i < visited.length; i++) {
-			visited[i] = false;
+		for (int i = 0; i < m+1; i++) {
+			visited[i] = true;
 		}
 		
 		//Calcuate the weight for the m+1 first nodes.
@@ -38,36 +38,15 @@ public class BasicLazyTSP implements LazyTSP {
 		//or nothing was found.
 		return getSequence(visited, g, m, k, B, weightSum, routeStart);
 	}
-
-	@Override
-	public List<Node> getLazyTSPSequence(Graph g, int m, int k, int B,
-			Collection<String> properties) {
-		return getLazyTSPSequence(g, m, k, B);
-	}
-	
-	private void checkArguments(Graph g, int m, int k, int B) {
-		if (k < 1 || m < 1 || B < 1) {
-			throw new IllegalArgumentException("(k, m, B) must be natural numbers (1+): ("
-					+ k + ", " + m + ", " + B + ").");
-		}
-		
-		final int invarNKM2 = g.getNodeCount() - k - m;
-		if (invarNKM2 < 2) {
-			throw new IllegalArgumentException(
-					"The invariant n - k - m >= 2 must hold: " + invarNKM2
-			);
-		}
-	}
 	
 	private List<Node> getSequence(boolean[] visited, Graph g, int m, int k, int B, double weightSum, Node routeStart) {
 		
-		Iterator<Node> ite = g.getNeighbourIterator(routeStart);
-		while (ite.hasNext()) {
-			Node node = ite.next();
-			if (node != routeStart && !visited[node.getId()-1]) {
+		for (Node node : g.getNodes()) {
+			if (node.getId() != routeStart.getId() && !visited[node.getId()-1]) {
 				//A candidate for a new path.
 				List<Node> sequence = new ArrayList<Node>();
 				sequence.add(routeStart);
+				sequence.add(node);
 				visited[node.getId()-1] = true;
 				List<Node> nodes = getSequence(visited, g, m, k, B,
 					weightSum + g.getWeight(routeStart, node),
@@ -98,13 +77,11 @@ public class BasicLazyTSP implements LazyTSP {
 			return null;
 		}
 		
-		Node routeCurrent = currentSequence.get(0);
-		Iterator<Node> ite = g.getNeighbourIterator(routeCurrent);
-		while (ite.hasNext()) {
-			Node node = ite.next();
-			if (node != routeCurrent && !visited[node.getId()-1]) {
+		Node routeCurrent = currentSequence.get(currentSequence.size()-1);
+		for (Node node : g.getNodes()) {
+			if (node.getId() != routeCurrent.getId() && !visited[node.getId()-1]) {
 				//A candidate for a new path.
-				currentSequence.add(routeCurrent);
+				currentSequence.add(node);
 				visited[node.getId()-1] = true;
 				List<Node> nodes = getSequence(visited, g, m, k, B, 
 					weightSum + g.getWeight(routeCurrent, node),
@@ -119,5 +96,12 @@ public class BasicLazyTSP implements LazyTSP {
 		}
 		
 		return null;
+	}
+
+	@Override
+	public List<Node> getBestLazyTSPSequence(Graph g, int m, int k,
+			Collection<String> properties) {
+		throw new UnsupportedOperationException("This class does not support" +
+				" the optimization version.");
 	}
 }

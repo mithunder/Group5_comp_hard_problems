@@ -106,13 +106,11 @@ is constant, then the maximum number of nodes that have to be picked will
 also be constant. This gives in effect a problem instance where for increasing n,
 a constant number c of nodes will have to be picked from these, fulfilling \(\star\).
 Ignoring m, this gives a=c, and a number of different combinations of nodes to pick equal to
-\[\frac{n!}{(n-a)!}\]
+\[\frac{n!}{(n-a)!} = n * (n-1) * (n-2) * .. * (n-a+1) \leq n_1 * n_2 * n_3 * .. * n_{a + 2} = n^{a}\]
 Note that this formula is similar to the binomial coefficient, but not the same,
 since the order of the picked nodes matters.
 
-TODO: The time complexity of that is non-trivial. A calc document has been committed to git
-that investigates the complexity. It seems to be something like \((b/log(n))^n\),
-but I am not certain./Melvin.
+Since a is constant, this means that the time complexity is polynomial.
 
 \textbf{m}
 

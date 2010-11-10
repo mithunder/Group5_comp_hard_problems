@@ -1,0 +1,12 @@
+
+//Form of the test file: problem-name, m, k, (1 for depth-first, 0 for branch-bound).
+//The depth-first can handle a number of cities up to (n - m -k) ~ 10.
+//The branch-bound can handle a number of cities up to n ~ 30.
+g4.tsp 1 1 1
+g4.tsp 1 1 0
+eil51.tsp 10 30 1
+eil51.tsp 10 30 0
+eil51.tsp 10 10 0
+pla85900.tsp 10 85885 1
+pla85900.tsp 85885 10 1
+pla85900.tsp 85885 10 0

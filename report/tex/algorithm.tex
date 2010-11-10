@@ -12,3 +12,91 @@ for which B is as small as possible.}
 
 \textit{Describe in words how the algorithm works.}
 
+For the sake of testing and trying things out, two algorihtms have been developed.
+The first will be explained in detail, while the second will be lightly explained.
+
+As a constraint, only the 2D-euclidean problems are supported.
+
+The two algorithms are somewhat simple. Both of them does not achieve
+a worst-case running time of O(\(2^n\)), but rather O(\(n!\)), which
+is far from what solutions for TSP can provide (for instance, inclusion-exclusion provides
+polynomial memory and O(\(2^n\)) running time, vastly better than O(\(n!\))).
+However, they are simple
+and quick to implement, which is fitting given the time constraints.
+An optimal algorithm should both take advantage of k when it is high,
+and solve the TSP-like structure when both m and k is low.
+
+\subsection{Depth-first search with pruning}
+
+The first algorithm is based on depth-first search with pruning,
+in order to decrease the running time. It searches deeply for a solution,
+and when found, it decreases the global limit for how long any solution may be
+(since any solution which is longer than that solution is not the best solution).
+After that, any time a new solution is found, the global limit is updated.
+
+In order to prune away branches in the depth-first search, it finds approximate lower bounds
+for each branch. These lower bounds are never higher than the best solution
+in that branch, but may be lower. This ensures that if a lower bound is higher
+than the global limit, it can safely be cut away, since the best solution in
+that branch would be longer than the current best solution.
+
+The basic bound is simply calculated as the length of the current sequence
+added to the distance from the end node in the sequence to start node 1.
+
+For the decision version, instead of setting the initial global upper bound to
+infinity, set it to B - the weight of the m-part.
+
+The issue with depth-first searching is that branching happens very far out.
+That means that even when a good upper bound has been found, it may not matter
+much, since the search may still search branches that could have been cut off
+at a higher level. And since the search tree increases exponentially,
+the earlier a branch can be cut, the better. The advantage, however, is that
+it is guaranteed not to run out of memory, even on large problem instances,
+since the memory use is minimal.
+
+\paragraph{Pseudo-code description}
+\
+\textit{init}
+\begin{enumerate}
+\item Check arguments for validity.
+\item Strip the graph of the 2..m nodes, and calculate the weight of their path.
+\item return \textit{search}
+\end{enumerate}
+
+\newline
+\textit{search}
+\begin{enumerate}
+	\item If (weight(path) + weight(path.end, start) \(>\) globalUpperBound)
+			then ignore this branch, and back-track.
+	\item If the sequence has full length, test the current path as a possible solution.
+	\item For each neighbour that is not part of the path and is not the start node:
+	\begin{enumerate}
+		\item Call search with a new path based on that node.
+		\item If the search back-tracked due to no better paths, continue.
+		\item Else, if a new possibly best path was found, select it as the
+				best path if it is better than the current one, and update the
+				global upper bound.
+				If this is decision-version, instead return the solution.
+	\end{enumerate}
+	\item Return the best path found so far, or null if decision version.
+\end{enumerate}
+
+\subsection{Branch and bound with greedy path selection}
+
+This algorithm is similar to the former algorithm, except for
+two parts:
+
+The first difference is that the lower bound may be tighther, but it takes more time
+to compute. For those nodes that constitutes the optimal solution for the current
+path, the lowest cost possible must be those two edges which are minimal. By taking
+half of that, a lower bound can be computed for each node. Now, by selecting those nodes
+that have the lowest half-sum of the lowest edges, which does not occur in the path,
+a possibly tighther lower bound can be computed.
+
+The second difference relates to the branching. Instead of deep-first searching the
+possible paths, a greedy search is used instead. This greedy search always picks
+the path that has the best lower bound. This means that in theory, the greedy search
+might quickly find a good solution, then later return up in the search tree and
+cut off a decent amount of branches. This can be much better than the depth-first
+search. The issue is that the memory use is exponential, which means it scales badly.
+

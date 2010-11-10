@@ -3,3 +3,43 @@
 
 \textit{Prove the worst-case running time of your algorithm for the optimizing version.}
 
+There are several cases, depending on the values of m and k.
+
+\paragraph{n - m = constant (k ignored)}
+
+Since it takes O(m) time to remove the 2..m nodes,
+and the remaining nodes are a constant number of nodes,
+the worst-case is linear in n.
+
+\paragraph{n - k = constant (m ignored)}
+
+For init 1 and 2, the time is polynomial.
+
+For search, it is called in the worst case
+at most \(n^{c}\) times, letting c be a constant.
+This can be seen by noticing that the depth-first
+searches all the permutations, and the above formula
+is derived from the number of permutations calculated
+in section c.
+
+Search 1 and 2 takes constant time.
+Search 3 is a loop which is iterated worst-case once per call
+of search, since search in the worst-case
+is called once for each iteration of the while.
+Search 3.a, 3.b and 3.c takes constant time.
+Search 4 takes constant time.
+
+All in all, O(\(n^{c}\)) time.
+
+\paragraph{No constraints}
+
+For init 1 and 2, the time is polynomial.
+
+For search, it is called in the worst case
+at most \(n!\) times.
+This can be seen by noticing that the depth-first
+searches all the permutations, which for a selection
+in which the order matters takes \(n!\) times.
+
+All in all, O(\(n!\)) time.
+

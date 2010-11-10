@@ -15,7 +15,10 @@ public interface LazyTSP {
 	 * @param B
 	 * @return Null if no sequence exists, or a list indicating the sequence (not the cycle).
 	 */
-	public List<Node> getLazyTSPSequence(Graph g, int m, int k, int B);
-	
 	public List<Node> getLazyTSPSequence(Graph g, int m, int k, int B, Collection<String> properties);
+	
+	/**
+	 * The optimizing version. May be unsupported.
+	 */
+	public List<Node> getBestLazyTSPSequence(Graph g, int m, int k, Collection<String> properties);
 }
